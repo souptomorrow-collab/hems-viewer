@@ -46,14 +46,14 @@
           rel="noopener">MongoDB Compass</a>（官方免費 GUI）</li>
       <li>跟湯明祐要唯讀連線字串，貼進去連線</li>
       <li>資料庫 <code>hems</code> 底下：
-        <br><code>load_forecast_flat</code>　← 負載預測（一列一步，欄名與交接 CSV 一致）
-        <br><code>actual_load</code>　　　　← 負載真實值
+        <br><code>load_forecast</code>　← 負載預測（一份文件＝一次刷新，96 步在 <code>steps</code> 陣列裡）
+        <br><code>actual_load</code>　　← 負載真實值
       </li>
     </ol>
-    <p>要匯出某一次刷新的 96 列，在 <code>load_forecast_flat</code> 的 filter 打：</p>
-    <p><code>{ "refresh_time": "2010-11-18 12:00:00" }</code></p>
-    <p>再按 <code>EXPORT DATA</code> → <code>Export query results</code> →
-       <code>All fields</code> → <code>CSV</code>，出來就是原本熟悉的格式。</p>
+    <p>要看某一次刷新，在 <code>load_forecast</code> 的 filter 打：</p>
+    <p><code>{ refresh_time: ISODate("2010-11-18T12:00:00Z") }</code></p>
+    <p>要匯出請按 <code>EXPORT DATA</code> → <code>Export query results</code> → <code>JSON</code>，
+       會保留 96 步的陣列結構；選 CSV 會攤成一列 771 欄。</p>
   </div>
 
   <div class="card">
@@ -62,9 +62,7 @@
   </div>
 
   <p class="note">
-    註：<code>load_forecast</code>（沒有 <code>_flat</code> 的那個）是原始集合，
-    一份文件裝著 96 步。直接匯出 CSV 會被拆成 771 欄 × 1 列，請改用
-    <code>load_forecast_flat</code>。
+    註：時間欄照字面存（牆上時間），filter 裡的 <code>Z</code> 只是格式，不要自己加減 8 小時。
   </p>
 </div>
 </body>
